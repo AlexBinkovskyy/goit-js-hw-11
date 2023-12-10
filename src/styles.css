@@ -7,7 +7,6 @@
 
 img {
   display: block;
-  margin-right: 50px;
   border: 0.5px solid;
   border-radius: 8px;
   box-shadow: 10px 10px 8px 2px rgba(0, 0, 0, 0.3);
@@ -29,16 +28,51 @@ button {
 }
 
 input,
-textarea {
+textarea, svg {
   outline: none;
 }
 
-body {
-  background-color: var(--main-bkgrnd-color);
-  font-family: 'Roboto', sans-serif;
-  font-style: normal;
-  color: #434455;
-  padding: 0 200;
+header {
+  height: 60px;
+  background-color: rgba(9, 29, 119, 0.884);
+  padding: 10px 650px;
 }
 
+.inputWrapper {
+  position: relative;
+}
 
+.form {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: right;
+  align-items: center;
+
+}
+
+.input {
+  height: 40px;
+  width: 100%;
+  font-size: 16px;
+  border-style: none;
+  border-radius: 5px;
+  padding: 0 7px;
+}
+
+.sbmt-btn {
+ position: absolute;
+ right: 15px;
+ display: flex;
+ background-color: transparent;
+}
+
+.icon {
+  fill: white;
+stroke: black;
+}
+
+.icon:hover, .icon:focus {
+  fill: white;
+stroke:  rgba(9, 29, 119, 0.884);;
+}
