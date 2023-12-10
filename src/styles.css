@@ -28,51 +28,56 @@ button {
 }
 
 input,
-textarea, svg {
+textarea,
+svg {
   outline: none;
 }
 
 header {
   height: 60px;
   background-color: rgba(9, 29, 119, 0.884);
-  padding: 10px 650px;
+  padding: 10px 350px;
 }
 
 .inputWrapper {
   position: relative;
 }
 
-.form {
+#search-form {
   position: relative;
   display: flex;
   flex-direction: row;
   justify-content: right;
   align-items: center;
-
 }
 
 .input {
   height: 40px;
   width: 100%;
-  font-size: 16px;
+  font-size: 22px;
   border-style: none;
   border-radius: 5px;
   padding: 0 7px;
 }
 
 .sbmt-btn {
- position: absolute;
- right: 15px;
- display: flex;
- background-color: transparent;
+  position: absolute;
+  right: 8px;
+  display: flex;
+  background-color: transparent;
 }
 
 .icon {
+  padding: 7px;
   fill: white;
-stroke: black;
+  stroke: black;
 }
 
-.icon:hover, .icon:focus {
+.icon:hover,
+.icon:focus {
   fill: white;
-stroke:  rgba(9, 29, 119, 0.884);;
+  stroke: rgba(9, 29, 119, 0.884);
+  /* padding: 5px; */
+  transform: scale(1.15);
+  transition:cubic-bezier(0.215, 0.610, 0.355, 1)
 }
