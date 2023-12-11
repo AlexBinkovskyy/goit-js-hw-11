@@ -11,18 +11,34 @@
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
+    <!--  -->
     <header>
       <div>
         <form id="search-form">
-          <input type="text" placeholder="Search images..." class="input" name="searchQuery" autocomplete="off"/>
+          <input
+            type="text"
+            placeholder="Search images..."
+            class="input"
+            name="searchQuery"
+            autocomplete="off"
+          />
           <button type="submit" class="sbmt-btn">
             <svg class="icon" width="40" height="40">
-              <use href="/src/img/outline_icon-min.svg#icon-outline_icon-min"></use>
+              <use
+                href="/src/img/outline_icon-min.svg#icon-outline_icon-min"
+              ></use>
             </svg>
           </button>
         </form>
       </div>
     </header>
+    <!--  -->
+    <main>
+      <div class="gallery"></div>
+    </main>
+    <script src="../node_modules/notiflix/dist/notiflix-aio-3.2.6.min.js"></script>
     <script src="index.js" type="module"></script>
   </body>
 </html>
+<!-- /dist/notiflix-aio-3.2.6.min.js -->
+
