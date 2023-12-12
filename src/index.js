@@ -30,7 +30,7 @@ const target = document.querySelector('.js-guard');
 const form = document.querySelector('#search-form');
 form.addEventListener('submit', onSubmit);
 
-function onLastItem(entries, observer) {
+function onLastItem(entries) {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       page += 1;
@@ -56,6 +56,7 @@ function smoothScroll(galleryItem, scrollPercentage) {
 async function onSubmit(event) {
   event.preventDefault();
   galleryItem.innerHTML = '';
+  queryString = '';
   queryString = event.target.searchQuery.value
     .trim()
     .toLowerCase()
@@ -63,7 +64,6 @@ async function onSubmit(event) {
 
   await fetchQuery(queryString)
     .then(response => {
-      console.log(response);
       addLayout(response);
     })
     .catch(err => console.log(err));
