@@ -33,12 +33,12 @@ button {
 input,
 textarea,
 svg,
-a, p {
+a,
+p {
   outline: none;
   display: block;
   text-decoration: none;
   height: 100%;
-  /* color: white; */
 }
 
 .gallery {
@@ -106,6 +106,8 @@ header {
   line-height: inherit;
 }
 
+
+
 .sbmt-btn {
   position: absolute;
   right: 3px;
@@ -115,37 +117,36 @@ header {
 
 .icon {
   padding: 7px;
-  fill: white;
-  stroke: black;
+  fill: black;
+  stroke: white;
 }
 
 .main-wrapper {
   position: relative;
 }
 
-.paragraph{
+.paragraph {
   display: flex;
   align-items: center;
   margin: 0 30px 0 20px;
   color: white;
 }
 
-
-.link-logo{
+.link-logo {
   position: absolute;
   display: flex;
   justify-content: left;
   align-items: center;
 }
 
-.logo{
-  fill:white;
+.logo {
+  fill: white;
 }
 
 .icon:hover,
 .icon:focus {
-  fill: white;
-  stroke: rgba(9, 29, 119, 0.884);
+  fill: black;
+  stroke: white;
   transform: scale(1.15);
   transition: cubic-bezier(0.215, 0.61, 0.355, 1);
 }
@@ -173,6 +174,28 @@ header {
   box-shadow: 4px 5px 6px 1px rgba(0, 0, 0, 0.3);
   border-radius: 10px;
 }
-.info-title{
+.info-title {
   margin-bottom: 3px;
+}
+
+.upper {
+  background-color: transparent;
+  position: fixed;
+  bottom: 40px;
+  right: 20px;
+  fill-opacity: 0.3;
+  fill: rgba(9, 29, 119, 0.884);
+  cursor: default;
+}
+
+@media screen and (max-width: 375px) {
+  .input {
+    width: 200px;
+  }
+  .paragraph {
+    display: none;
+  }
+  .link-logo {
+    display: none;
+  }
 }
