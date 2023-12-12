@@ -19,7 +19,10 @@ form.addEventListener('submit', onSubmit);
 
 async function onSubmit(event) {
   event.preventDefault();
-  const queryString = event.target.searchQuery.value.trim();
+  const queryString = event.target.searchQuery.value
+    .trim()
+    .toLowerCase()
+    .replaceAll(' ', '+');
   // form.reset();
 
   await fetchQuery(queryString)
@@ -33,9 +36,11 @@ async function fetchQuery(queryString) {
     image_type: 'photo',
     orientation: 'horizontal',
     safesearch: 'true',
+    per_page: 40,
+    page: 1,
   };
   const axInstance = await axios(
-    `${MAIN_URL}?key=${KEY}&q=${queryString}&${params}`
+    `${MAIN_URL}?key=${KEY}&q=${queryString}&image_type=${params.image_type}&orientation=${params.orientation}&safesearch=${params.safesearch}&per_page=${params.per_page}&page=${params.page}`
   );
   return axInstance;
 }
@@ -52,7 +57,7 @@ function addLayout(response) {
   }
 }
 
-function createLayout({ total, hits }) {
+function createLayout({ hits }) {
   const res = hits
     .map(item => {
       return `<a href="${item.largeImageURL}" class="link">
