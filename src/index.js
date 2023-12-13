@@ -11,52 +11,43 @@ Notiflix.Notify.init({
   timeout: 3500,
 });
 
+// IntersectionObserver
 let options = {
   root: null,
-  rootMargin: '250px',
+  rootMargin: '300px',
+};
+
+// AxiosQuery
+const params = {
+  image_type: 'photo',
+  orientation: 'horizontal',
+  safesearch: 'true',
+  per_page: 40,
 };
 
 let observer = new IntersectionObserver(onLastItem, options);
 let queryString = '';
 let page = 1;
+let gallery = new SimpleLightbox('.gallery a');
 
 const MAIN_URL = 'https://pixabay.com/api/';
 const KEY = '29244852-b91e3d5198a9840c92a9dad06';
 const galleryItem = document.querySelector('.gallery');
 const upperBtn = document.querySelector('.upper');
-// upperBtn.addEventListener('click', onclick);
 const target = document.querySelector('.js-guard');
 
 const form = document.querySelector('#search-form');
 form.addEventListener('submit', onSubmit);
 
-function onLastItem(entries) {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      page += 1;
-      fetchQuery(queryString)
-        .then(response => {
-          // gallery.refresh();
-          addLayout(response);
-        })
-        .catch(err => console.log(err));
-    }
-  });
-}
-
-function smoothScroll(galleryItem, scrollPercentage) {
-  const { height: cardHeight } =
-    galleryItem.firstElementChild.getBoundingClientRect();
-  window.scrollBy({
-    top: cardHeight * scrollPercentage,
-    behavior: 'smooth',
-  });
-}
+fetchQuery('photo')
+  .then(response => addLayout(response))
+  .catch(err => console.log(err));
 
 async function onSubmit(event) {
   event.preventDefault();
   galleryItem.innerHTML = '';
   queryString = '';
+  page = 1;
   queryString = event.target.searchQuery.value
     .trim()
     .toLowerCase()
@@ -70,12 +61,6 @@ async function onSubmit(event) {
 }
 
 async function fetchQuery(queryString) {
-  const params = {
-    image_type: 'photo',
-    orientation: 'horizontal',
-    safesearch: 'true',
-    per_page: 40,
-  };
   const axInstance = await axios(
     `${MAIN_URL}?key=${KEY}&q=${queryString}&image_type=${params.image_type}&orientation=${params.orientation}&safesearch=${params.safesearch}&per_page=${params.per_page}&page=${page}`
   );
@@ -90,11 +75,16 @@ function addLayout(response) {
       'Sorry, there are no images matching your search query. Please try again.'
     );
   } else {
-    createLayout(response.data);
+    if (response.data.hits.length < params.per_page) {
+      observer.unobserve(target);
+      createLayout(response.data);
+    } else {
+      createLayout(response.data);
+    }
   }
 }
 
-function createLayout({ hits }) {
+function createLayout({ hits, total }) {
   const res = hits
     .map(item => {
       return `<a href="${item.largeImageURL}" class="link">
@@ -121,13 +111,16 @@ function createLayout({ hits }) {
              </a> `;
     })
     .join('');
-
   galleryItem.insertAdjacentHTML('beforeend', res);
   let gallery = new SimpleLightbox('.gallery a');
 
-  smoothScroll(galleryItem, 0.25);
-
   observer.observe(target);
+
+  if (total <= page * params.per_page) {
+    observer.unobserve(target);
+  }
+
+  smoothScroll(galleryItem, 0.25);
 
   upperBtn.removeAttribute('disabled');
   upperBtn.style.fillOpacity = 1;
@@ -136,4 +129,24 @@ function createLayout({ hits }) {
   upperBtn.onclick = () => {
     window.scrollTo(0, 0);
   };
+}
+
+function smoothScroll(galleryItem, scrollPercentage) {
+  const { height: cardHeight } =
+    galleryItem.firstElementChild.getBoundingClientRect();
+  window.scrollBy({
+    top: cardHeight * scrollPercentage,
+    behavior: 'smooth',
+  });
+}
+
+function onLastItem(entries) {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      page += 1;
+      fetchQuery(queryString)
+        .then(response => addLayout(response))
+        .catch(err => console.log(err));
+    }
+  });
 }
