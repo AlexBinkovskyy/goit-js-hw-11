@@ -14,6 +14,7 @@ Notiflix.Notify.init({
 // IntersectionObserver
 let options = {
   root: null,
+  treshold: 1.0,
   rootMargin: '300px',
 };
 
@@ -28,7 +29,7 @@ const params = {
 let observer = new IntersectionObserver(onLastItem, options);
 let queryString = '';
 let page = 1;
-let gallery = new SimpleLightbox('.gallery a');
+let gallery;
 
 const MAIN_URL = 'https://pixabay.com/api/';
 const KEY = '29244852-b91e3d5198a9840c92a9dad06';
@@ -45,6 +46,7 @@ fetchQuery('photo')
 
 async function onSubmit(event) {
   event.preventDefault();
+  observer.unobserve(target);
   galleryItem.innerHTML = '';
   queryString = '';
   page = 1;
@@ -75,12 +77,7 @@ function addLayout(response) {
       'Sorry, there are no images matching your search query. Please try again.'
     );
   } else {
-    if (response.data.hits.length < params.per_page) {
-      observer.unobserve(target);
-      createLayout(response.data);
-    } else {
-      createLayout(response.data);
-    }
+    createLayout(response.data);
   }
 }
 
@@ -112,11 +109,11 @@ function createLayout({ hits, total }) {
     })
     .join('');
   galleryItem.insertAdjacentHTML('beforeend', res);
-  let gallery = new SimpleLightbox('.gallery a');
-
+  gallery = new SimpleLightbox('.gallery a');
+  page += 1;
   observer.observe(target);
 
-  if (total <= page * params.per_page) {
+  if (total <= page * params.per_page - params.per_page) {
     observer.unobserve(target);
   }
 
@@ -141,12 +138,9 @@ function smoothScroll(galleryItem, scrollPercentage) {
 }
 
 function onLastItem(entries) {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      page += 1;
-      fetchQuery(queryString)
-        .then(response => addLayout(response))
-        .catch(err => console.log(err));
-    }
-  });
+  if (entries[0].isIntersecting) {
+    fetchQuery(queryString)
+      .then(response => addLayout(response))
+      .catch(err => console.log(err));
+  }
 }
