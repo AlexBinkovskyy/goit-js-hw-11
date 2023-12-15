@@ -14,7 +14,7 @@ Notiflix.Notify.init({
 // IntersectionObserver
 let options = {
   root: null,
-  treshold: 1.0,
+  threshold: 1.0,
   rootMargin: '300px',
 };
 
@@ -50,6 +50,7 @@ async function onSubmit(event) {
   galleryItem.innerHTML = '';
   queryString = '';
   page = 1;
+
   queryString = event.target.searchQuery.value
     .trim()
     .toLowerCase()
@@ -108,6 +109,7 @@ function createLayout({ hits, total }) {
              </a> `;
     })
     .join('');
+  destroyGalerry();
   galleryItem.insertAdjacentHTML('beforeend', res);
   gallery = new SimpleLightbox('.gallery a');
   page += 1;
@@ -143,4 +145,7 @@ function onLastItem(entries) {
       .then(response => addLayout(response))
       .catch(err => console.log(err));
   }
+}
+async function destroyGalerry(){
+   await gallery.refresh();
 }
